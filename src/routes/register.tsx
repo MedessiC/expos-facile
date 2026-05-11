@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,33 +11,16 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Logo } from "@/components/shared/Logo";
 import { MATIERES } from "@/lib/constants";
-import { ArrowLeft } from "lucide-react";
-import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
-import "react-phone-number-input/style.css";
 import toast from "react-hot-toast";
 
-export const Route = createFileRoute("/register")({ 
-  head: () => ({
-    meta: [
-      { title: "Inscription - ExposéTché | Créez votre compte" },
-      { name: "description", content: "Créez votre compte ExposéTché. Inscrivez-vous en tant qu'élève ou rédacteur et rejoignez notre communauté." },
-      { name: "robots", content: "noindex, follow" },
-      { property: "og:title", content: "Inscription - ExposéTché" },
-      { property: "og:description", content: "Créez votre compte ExposéTché gratuit" },
-    ],
-    links: [
-      { rel: "canonical", href: "https://exposetche.com/register" },
-    ],
-  }),
-  component: RegisterPage 
-});
+export const Route = createFileRoute("/register")({ component: RegisterPage });
 
 const eleveSchema = z.object({
   nom: z.string().min(2, "Requis"),
   prenom: z.string().min(2, "Requis"),
   email: z.string().email("Email invalide"),
   password: z.string().min(6, "6 caractères minimum"),
-  telephone: z.string().refine((val) => isValidPhoneNumber(val || ""), "Numéro de téléphone invalide"),
+  telephone: z.string().min(8, "Téléphone requis"),
   ecole: z.string().min(2, "École requise"),
   classe: z.string().min(1, "Classe requise"),
 });
@@ -47,7 +30,7 @@ const redacteurSchema = z.object({
   prenom: z.string().min(2, "Requis"),
   email: z.string().email("Email invalide"),
   password: z.string().min(6, "6 caractères minimum"),
-  telephone: z.string().refine((val) => isValidPhoneNumber(val || ""), "Numéro de téléphone invalide"),
+  telephone: z.string().min(8, "Téléphone requis"),
   niveau_etudes: z.string().min(2, "Niveau requis"),
   matieres: z.array(z.string()).min(1, "Choisissez au moins une matière"),
 });
@@ -65,13 +48,7 @@ function RegisterPage() {
   }, [loading, user, role, navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-brand p-4 flex items-start justify-center relative">
-      <Link to="/" className="absolute top-4 left-4 z-10">
-        <Button variant="ghost" size="sm" className="text-white/80 hover:text-white hover:bg-white/10">
-          <ArrowLeft size={16} className="mr-2" />
-          Retour à l'accueil
-        </Button>
-      </Link>
+    <div className="min-h-screen bg-gradient-brand p-4 flex items-start justify-center">
       <div className="w-full max-w-lg rounded-2xl bg-card p-6 md:p-8 shadow-elegant my-8">
         <div className="flex justify-center mb-6"><Logo /></div>
         <h1 className="text-2xl font-bold text-center">Créer un compte</h1>
@@ -102,7 +79,7 @@ function RegisterPage() {
 
 function EleveForm() {
   const [busy, setBusy] = useState(false);
-  const { register, handleSubmit, formState: { errors }, control } = useForm<EleveData>({ resolver: zodResolver(eleveSchema) });
+  const { register, handleSubmit, formState: { errors } } = useForm<EleveData>({ resolver: zodResolver(eleveSchema) });
 
   const onSubmit = async (data: EleveData) => {
     setBusy(true);
@@ -143,19 +120,7 @@ function EleveForm() {
         <Input placeholder="Ex: Terminale D" {...register("classe")} />
       </Field>
       <Field label="Téléphone" error={errors.telephone?.message}>
-        <Controller
-          name="telephone"
-          control={control}
-          render={({ field }) => (
-            <PhoneInput
-              international
-              defaultCountry="FR"
-              value={field.value}
-              onChange={field.onChange}
-              className="bg-background border border-input rounded-md px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-midnight focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            />
-          )}
-        />
+        <Input type="tel" {...register("telephone")} />
       </Field>
       <Field label="Email" error={errors.email?.message}>
         <Input type="email" {...register("email")} />
@@ -174,7 +139,7 @@ function RedacteurForm() {
   const [busy, setBusy] = useState(false);
   const [matieres, setMatieres] = useState<string[]>([]);
   const [cv, setCv] = useState<File | null>(null);
-  const { register, handleSubmit, formState: { errors }, setValue, control } = useForm<RedData>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<RedData>({
     resolver: zodResolver(redacteurSchema),
     defaultValues: { matieres: [] },
   });

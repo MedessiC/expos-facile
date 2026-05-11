@@ -1,4 +1,4 @@
-# ExposéTché — Plan de build v1
+# Exposétché — Plan de build v1
 
 Plateforme mobile-first élégante (midnight blue + gold) sur TanStack Router + Lovable Cloud (Supabase). Paiement FedaPay stubbé.
 

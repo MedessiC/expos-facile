@@ -9,24 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/shared/Logo";
-import { ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
 
-export const Route = createFileRoute("/login")({ 
-  head: () => ({
-    meta: [
-      { title: "Connexion - ExposéTché | Accès à votre compte" },
-      { name: "description", content: "Connectez-vous à votre compte ExposéTché. Plateforme sécurisée pour élèves et rédacteurs." },
-      { name: "robots", content: "noindex, follow" },
-      { property: "og:title", content: "Connexion - ExposéTché" },
-      { property: "og:description", content: "Accédez à votre compte ExposéTché" },
-    ],
-    links: [
-      { rel: "canonical", href: "https://exposetche.com/login" },
-    ],
-  }),
-  component: LoginPage 
-});
+export const Route = createFileRoute("/login")({ component: LoginPage });
 
 const schema = z.object({
   email: z.string().email("Email invalide"),
@@ -57,13 +42,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen grid place-items-center bg-gradient-brand p-4 relative">
-      <Link to="/" className="absolute top-4 left-4 z-10">
-        <Button variant="ghost" size="sm" className="text-white/80 hover:text-white hover:bg-white/10">
-          <ArrowLeft size={16} className="mr-2" />
-          Retour à l'accueil
-        </Button>
-      </Link>
+    <div className="min-h-screen grid place-items-center bg-gradient-brand p-4">
       <div className="w-full max-w-md rounded-2xl bg-card p-6 md:p-8 shadow-elegant">
         <div className="flex justify-center mb-6"><Logo /></div>
         <h1 className="text-2xl font-bold text-center">Connexion</h1>

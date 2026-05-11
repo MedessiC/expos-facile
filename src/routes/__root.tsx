@@ -61,29 +61,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ExposéTché - Plateforme MIDEESSI | Commande d'exposés scolaires en ligne" },
-      { name: "description", content: "ExposéTché par MIDEESSI : plateforme de commande d'exposés scolaires de qualité. Rédacteurs certifiés, livrables validés, paiements sécurisés. Élèves et rédacteurs bienvenus." },
-      { name: "keywords", content: "exposés scolaires, rédaction d'exposés, aide scolaire, MIDEESSI, plateforme éducative, travaux scolaires" },
-      { name: "author", content: "MIDEESSI" },
-      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
-      { property: "og:site_name", content: "ExposéTché" },
-      { property: "og:type", content: "website" },
-      { property: "og:title", content: "ExposéTché - Plateforme MIDEESSI | Commande d'exposés scolaires" },
-      { property: "og:description", content: "Commandez vos exposés scolaires auprès de rédacteurs certifiés. Plateforme sécurisée et fiable de MIDEESSI." },
-      { property: "og:url", content: "https://exposetche.com" },
-      { property: "og:image", content: "https://exposetche.com/og-image.png" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "ExposéTché - Commande d'exposés scolaires" },
-      { name: "twitter:description", content: "Plateforme de commande d'exposés scolaires par MIDEESSI" },
-      { name: "theme-color", content: "#000000" },
-      { name: "apple-mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { title: "Exposétché — Commande d'exposés scolaires" },
+      { name: "description", content: "Plateforme MIDEESSI : commandez vos exposés scolaires, réalisés par des rédacteurs humains, livrés validés." },
     ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "canonical", href: "https://exposetche.com" },
-      { rel: "alternate", hrefLang: "fr", href: "https://exposetche.com" },
-    ],
+    links: [{ rel: "stylesheet", href: appCss }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -92,29 +73,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {
-  const schemaData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "ExposéTché",
-    "url": "https://exposetche.com",
-    "logo": "https://exposetche.com/logo.png",
-    "description": "Plateforme de commande d'exposés scolaires par MIDEESSI",
-    "sameAs": [
-      "https://www.facebook.com/mideessi",
-      "https://www.instagram.com/mideessi",
-      "https://www.twitter.com/mideessi"
-    ],
-    "founder": {
-      "@type": "Organization",
-      "name": "MIDEESSI"
-    }
-  };
-
   return (
     <html lang="fr">
       <head>
         <HeadContent />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
       </head>
       <body>
         {children}

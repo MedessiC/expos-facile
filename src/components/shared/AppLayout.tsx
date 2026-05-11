@@ -3,7 +3,7 @@ import { useEffect, type ReactNode } from "react";
 import { useAuth } from "@/store/auth";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { Home, LogOut, LayoutDashboard, FilePlus2, Briefcase, Wallet, User as UserIcon, ShieldCheck, Users as UsersIcon, ClipboardList, Bell } from "lucide-react";
+import { LogOut, LayoutDashboard, FilePlus2, Briefcase, Wallet, User as UserIcon, ShieldCheck, Users as UsersIcon, ClipboardList } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Role } from "@/lib/constants";
 
@@ -17,7 +17,6 @@ const NAV: Record<Role, NavItem[]> = {
   eleve: [
     { to: "/eleve/dashboard", label: "Accueil", icon: LayoutDashboard },
     { to: "/eleve/nouvelle-commande", label: "Commander", icon: FilePlus2 },
-    { to: "/eleve/commandes", label: "Mes commandes", icon: ClipboardList },
   ],
   redacteur: [
     { to: "/redacteur/dashboard", label: "Accueil", icon: LayoutDashboard },
@@ -71,20 +70,6 @@ export function AppLayout({
           <Link to={`/${role}/dashboard` as any} className="text-midnight-foreground">
             <Logo />
           </Link>
-          <div className="flex items-center gap-2">
-            <Link to="/" className="rounded-lg border border-white/10 bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20 transition-colors flex items-center gap-2">
-              <Home size={16} />
-              <span className="hidden sm:inline">Accueil site</span>
-            </Link>
-            <Button
-              size="sm"
-              variant="ghost"
-              className="text-midnight-foreground hover:bg-white/10"
-              aria-label="Notifications"
-            >
-              <Bell size={16} />
-            </Button>
-          </div>
           <div className="flex items-center gap-2">
             <span className="hidden sm:block text-sm opacity-80">
               {profile?.prenom} · <span className="capitalize">{role}</span>
