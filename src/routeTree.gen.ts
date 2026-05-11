@@ -18,6 +18,11 @@ import { Route as RedacteurMissionsRouteImport } from './routes/redacteur.missio
 import { Route as RedacteurDashboardRouteImport } from './routes/redacteur.dashboard'
 import { Route as EleveNouvelleCommandeRouteImport } from './routes/eleve.nouvelle-commande'
 import { Route as EleveDashboardRouteImport } from './routes/eleve.dashboard'
+import { Route as AdminValidationRouteImport } from './routes/admin.validation'
+import { Route as AdminRedacteursRouteImport } from './routes/admin.redacteurs'
+import { Route as AdminPaiementsRouteImport } from './routes/admin.paiements'
+import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AdminCommandesRouteImport } from './routes/admin.commandes'
 import { Route as RedacteurMissionIdRouteImport } from './routes/redacteur.mission.$id'
 import { Route as EleveCommandeIdRouteImport } from './routes/eleve.commande.$id'
 
@@ -66,6 +71,31 @@ const EleveDashboardRoute = EleveDashboardRouteImport.update({
   path: '/eleve/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminValidationRoute = AdminValidationRouteImport.update({
+  id: '/admin/validation',
+  path: '/admin/validation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRedacteursRoute = AdminRedacteursRouteImport.update({
+  id: '/admin/redacteurs',
+  path: '/admin/redacteurs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPaiementsRoute = AdminPaiementsRouteImport.update({
+  id: '/admin/paiements',
+  path: '/admin/paiements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/admin/dashboard',
+  path: '/admin/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCommandesRoute = AdminCommandesRouteImport.update({
+  id: '/admin/commandes',
+  path: '/admin/commandes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RedacteurMissionIdRoute = RedacteurMissionIdRouteImport.update({
   id: '/redacteur/mission/$id',
   path: '/redacteur/mission/$id',
@@ -81,6 +111,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/admin/commandes': typeof AdminCommandesRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/paiements': typeof AdminPaiementsRoute
+  '/admin/redacteurs': typeof AdminRedacteursRoute
+  '/admin/validation': typeof AdminValidationRoute
   '/eleve/dashboard': typeof EleveDashboardRoute
   '/eleve/nouvelle-commande': typeof EleveNouvelleCommandeRoute
   '/redacteur/dashboard': typeof RedacteurDashboardRoute
@@ -94,6 +129,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/admin/commandes': typeof AdminCommandesRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/paiements': typeof AdminPaiementsRoute
+  '/admin/redacteurs': typeof AdminRedacteursRoute
+  '/admin/validation': typeof AdminValidationRoute
   '/eleve/dashboard': typeof EleveDashboardRoute
   '/eleve/nouvelle-commande': typeof EleveNouvelleCommandeRoute
   '/redacteur/dashboard': typeof RedacteurDashboardRoute
@@ -108,6 +148,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/admin/commandes': typeof AdminCommandesRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/paiements': typeof AdminPaiementsRoute
+  '/admin/redacteurs': typeof AdminRedacteursRoute
+  '/admin/validation': typeof AdminValidationRoute
   '/eleve/dashboard': typeof EleveDashboardRoute
   '/eleve/nouvelle-commande': typeof EleveNouvelleCommandeRoute
   '/redacteur/dashboard': typeof RedacteurDashboardRoute
@@ -123,6 +168,11 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/admin/commandes'
+    | '/admin/dashboard'
+    | '/admin/paiements'
+    | '/admin/redacteurs'
+    | '/admin/validation'
     | '/eleve/dashboard'
     | '/eleve/nouvelle-commande'
     | '/redacteur/dashboard'
@@ -136,6 +186,11 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/admin/commandes'
+    | '/admin/dashboard'
+    | '/admin/paiements'
+    | '/admin/redacteurs'
+    | '/admin/validation'
     | '/eleve/dashboard'
     | '/eleve/nouvelle-commande'
     | '/redacteur/dashboard'
@@ -149,6 +204,11 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/admin/commandes'
+    | '/admin/dashboard'
+    | '/admin/paiements'
+    | '/admin/redacteurs'
+    | '/admin/validation'
     | '/eleve/dashboard'
     | '/eleve/nouvelle-commande'
     | '/redacteur/dashboard'
@@ -163,6 +223,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  AdminCommandesRoute: typeof AdminCommandesRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminPaiementsRoute: typeof AdminPaiementsRoute
+  AdminRedacteursRoute: typeof AdminRedacteursRoute
+  AdminValidationRoute: typeof AdminValidationRoute
   EleveDashboardRoute: typeof EleveDashboardRoute
   EleveNouvelleCommandeRoute: typeof EleveNouvelleCommandeRoute
   RedacteurDashboardRoute: typeof RedacteurDashboardRoute
@@ -238,6 +303,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EleveDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/validation': {
+      id: '/admin/validation'
+      path: '/admin/validation'
+      fullPath: '/admin/validation'
+      preLoaderRoute: typeof AdminValidationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/redacteurs': {
+      id: '/admin/redacteurs'
+      path: '/admin/redacteurs'
+      fullPath: '/admin/redacteurs'
+      preLoaderRoute: typeof AdminRedacteursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/paiements': {
+      id: '/admin/paiements'
+      path: '/admin/paiements'
+      fullPath: '/admin/paiements'
+      preLoaderRoute: typeof AdminPaiementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/admin/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/commandes': {
+      id: '/admin/commandes'
+      path: '/admin/commandes'
+      fullPath: '/admin/commandes'
+      preLoaderRoute: typeof AdminCommandesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/redacteur/mission/$id': {
       id: '/redacteur/mission/$id'
       path: '/redacteur/mission/$id'
@@ -259,6 +359,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  AdminCommandesRoute: AdminCommandesRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
+  AdminPaiementsRoute: AdminPaiementsRoute,
+  AdminRedacteursRoute: AdminRedacteursRoute,
+  AdminValidationRoute: AdminValidationRoute,
   EleveDashboardRoute: EleveDashboardRoute,
   EleveNouvelleCommandeRoute: EleveNouvelleCommandeRoute,
   RedacteurDashboardRoute: RedacteurDashboardRoute,
