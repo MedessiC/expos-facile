@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EleveNouvelleCommandeRouteImport } from './routes/eleve.nouvelle-commande'
+import { Route as EleveDashboardRouteImport } from './routes/eleve.dashboard'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -28,35 +30,69 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EleveNouvelleCommandeRoute = EleveNouvelleCommandeRouteImport.update({
+  id: '/eleve/nouvelle-commande',
+  path: '/eleve/nouvelle-commande',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EleveDashboardRoute = EleveDashboardRouteImport.update({
+  id: '/eleve/dashboard',
+  path: '/eleve/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/eleve/dashboard': typeof EleveDashboardRoute
+  '/eleve/nouvelle-commande': typeof EleveNouvelleCommandeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/eleve/dashboard': typeof EleveDashboardRoute
+  '/eleve/nouvelle-commande': typeof EleveNouvelleCommandeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/eleve/dashboard': typeof EleveDashboardRoute
+  '/eleve/nouvelle-commande': typeof EleveNouvelleCommandeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/eleve/dashboard'
+    | '/eleve/nouvelle-commande'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register'
-  id: '__root__' | '/' | '/login' | '/register'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/eleve/dashboard'
+    | '/eleve/nouvelle-commande'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/register'
+    | '/eleve/dashboard'
+    | '/eleve/nouvelle-commande'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  EleveDashboardRoute: typeof EleveDashboardRoute
+  EleveNouvelleCommandeRoute: typeof EleveNouvelleCommandeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +118,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/eleve/nouvelle-commande': {
+      id: '/eleve/nouvelle-commande'
+      path: '/eleve/nouvelle-commande'
+      fullPath: '/eleve/nouvelle-commande'
+      preLoaderRoute: typeof EleveNouvelleCommandeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eleve/dashboard': {
+      id: '/eleve/dashboard'
+      path: '/eleve/dashboard'
+      fullPath: '/eleve/dashboard'
+      preLoaderRoute: typeof EleveDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,7 +139,19 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  EleveDashboardRoute: EleveDashboardRoute,
+  EleveNouvelleCommandeRoute: EleveNouvelleCommandeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
