@@ -3,7 +3,7 @@ import { useEffect, type ReactNode } from "react";
 import { useAuth } from "@/store/auth";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { LogOut, LayoutDashboard, FilePlus2, ListChecks, Briefcase, Wallet, User as UserIcon, ShieldCheck, Users as UsersIcon, ClipboardList } from "lucide-react";
+import { LogOut, LayoutDashboard, FilePlus2, Briefcase, Wallet, User as UserIcon, ShieldCheck, Users as UsersIcon, ClipboardList } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Role } from "@/lib/constants";
 
@@ -48,7 +48,7 @@ export function AppLayout({
     if (loading) return;
     if (!user) navigate({ to: "/login" });
     else if (requireRole && role && role !== requireRole) {
-      navigate({ to: `/${role}/dashboard` as string });
+      navigate({ to: `/${role}/dashboard` as any });
     }
   }, [loading, user, role, requireRole, navigate]);
 
@@ -67,7 +67,7 @@ export function AppLayout({
       {/* Header */}
       <header className="sticky top-0 z-40 bg-gradient-brand text-midnight-foreground border-b border-sidebar-border/40">
         <div className="mx-auto max-w-6xl flex items-center justify-between px-4 h-14">
-          <Link to={`/${role}/dashboard` as string} className="text-midnight-foreground">
+          <Link to={`/${role}/dashboard` as any} className="text-midnight-foreground">
             <Logo />
           </Link>
           <div className="flex items-center gap-2">
@@ -98,7 +98,7 @@ export function AppLayout({
             return (
               <Link
                 key={it.to}
-                to={it.to}
+                to={it.to as any}
                 className={cn(
                   "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   active
@@ -124,7 +124,7 @@ export function AppLayout({
             return (
               <Link
                 key={it.to}
-                to={it.to}
+                to={it.to as any}
                 className={cn(
                   "flex flex-col items-center gap-0.5 py-2.5 text-[11px]",
                   active ? "text-midnight" : "text-muted-foreground",
@@ -141,4 +141,3 @@ export function AppLayout({
   );
 }
 
-interface ListChecksType { __unused?: typeof ListChecks }
