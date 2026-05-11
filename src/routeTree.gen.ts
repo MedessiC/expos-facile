@@ -12,8 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RedacteurProfilRouteImport } from './routes/redacteur.profil'
+import { Route as RedacteurPaiementsRouteImport } from './routes/redacteur.paiements'
+import { Route as RedacteurMissionsRouteImport } from './routes/redacteur.missions'
+import { Route as RedacteurDashboardRouteImport } from './routes/redacteur.dashboard'
 import { Route as EleveNouvelleCommandeRouteImport } from './routes/eleve.nouvelle-commande'
 import { Route as EleveDashboardRouteImport } from './routes/eleve.dashboard'
+import { Route as RedacteurMissionIdRouteImport } from './routes/redacteur.mission.$id'
+import { Route as EleveCommandeIdRouteImport } from './routes/eleve.commande.$id'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -30,6 +36,26 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RedacteurProfilRoute = RedacteurProfilRouteImport.update({
+  id: '/redacteur/profil',
+  path: '/redacteur/profil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedacteurPaiementsRoute = RedacteurPaiementsRouteImport.update({
+  id: '/redacteur/paiements',
+  path: '/redacteur/paiements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedacteurMissionsRoute = RedacteurMissionsRouteImport.update({
+  id: '/redacteur/missions',
+  path: '/redacteur/missions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedacteurDashboardRoute = RedacteurDashboardRouteImport.update({
+  id: '/redacteur/dashboard',
+  path: '/redacteur/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EleveNouvelleCommandeRoute = EleveNouvelleCommandeRouteImport.update({
   id: '/eleve/nouvelle-commande',
   path: '/eleve/nouvelle-commande',
@@ -40,6 +66,16 @@ const EleveDashboardRoute = EleveDashboardRouteImport.update({
   path: '/eleve/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RedacteurMissionIdRoute = RedacteurMissionIdRouteImport.update({
+  id: '/redacteur/mission/$id',
+  path: '/redacteur/mission/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EleveCommandeIdRoute = EleveCommandeIdRouteImport.update({
+  id: '/eleve/commande/$id',
+  path: '/eleve/commande/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +83,12 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/eleve/dashboard': typeof EleveDashboardRoute
   '/eleve/nouvelle-commande': typeof EleveNouvelleCommandeRoute
+  '/redacteur/dashboard': typeof RedacteurDashboardRoute
+  '/redacteur/missions': typeof RedacteurMissionsRoute
+  '/redacteur/paiements': typeof RedacteurPaiementsRoute
+  '/redacteur/profil': typeof RedacteurProfilRoute
+  '/eleve/commande/$id': typeof EleveCommandeIdRoute
+  '/redacteur/mission/$id': typeof RedacteurMissionIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +96,12 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/eleve/dashboard': typeof EleveDashboardRoute
   '/eleve/nouvelle-commande': typeof EleveNouvelleCommandeRoute
+  '/redacteur/dashboard': typeof RedacteurDashboardRoute
+  '/redacteur/missions': typeof RedacteurMissionsRoute
+  '/redacteur/paiements': typeof RedacteurPaiementsRoute
+  '/redacteur/profil': typeof RedacteurProfilRoute
+  '/eleve/commande/$id': typeof EleveCommandeIdRoute
+  '/redacteur/mission/$id': typeof RedacteurMissionIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,6 +110,12 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/eleve/dashboard': typeof EleveDashboardRoute
   '/eleve/nouvelle-commande': typeof EleveNouvelleCommandeRoute
+  '/redacteur/dashboard': typeof RedacteurDashboardRoute
+  '/redacteur/missions': typeof RedacteurMissionsRoute
+  '/redacteur/paiements': typeof RedacteurPaiementsRoute
+  '/redacteur/profil': typeof RedacteurProfilRoute
+  '/eleve/commande/$id': typeof EleveCommandeIdRoute
+  '/redacteur/mission/$id': typeof RedacteurMissionIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -71,6 +125,12 @@ export interface FileRouteTypes {
     | '/register'
     | '/eleve/dashboard'
     | '/eleve/nouvelle-commande'
+    | '/redacteur/dashboard'
+    | '/redacteur/missions'
+    | '/redacteur/paiements'
+    | '/redacteur/profil'
+    | '/eleve/commande/$id'
+    | '/redacteur/mission/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -78,6 +138,12 @@ export interface FileRouteTypes {
     | '/register'
     | '/eleve/dashboard'
     | '/eleve/nouvelle-commande'
+    | '/redacteur/dashboard'
+    | '/redacteur/missions'
+    | '/redacteur/paiements'
+    | '/redacteur/profil'
+    | '/eleve/commande/$id'
+    | '/redacteur/mission/$id'
   id:
     | '__root__'
     | '/'
@@ -85,6 +151,12 @@ export interface FileRouteTypes {
     | '/register'
     | '/eleve/dashboard'
     | '/eleve/nouvelle-commande'
+    | '/redacteur/dashboard'
+    | '/redacteur/missions'
+    | '/redacteur/paiements'
+    | '/redacteur/profil'
+    | '/eleve/commande/$id'
+    | '/redacteur/mission/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -93,6 +165,12 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   EleveDashboardRoute: typeof EleveDashboardRoute
   EleveNouvelleCommandeRoute: typeof EleveNouvelleCommandeRoute
+  RedacteurDashboardRoute: typeof RedacteurDashboardRoute
+  RedacteurMissionsRoute: typeof RedacteurMissionsRoute
+  RedacteurPaiementsRoute: typeof RedacteurPaiementsRoute
+  RedacteurProfilRoute: typeof RedacteurProfilRoute
+  EleveCommandeIdRoute: typeof EleveCommandeIdRoute
+  RedacteurMissionIdRoute: typeof RedacteurMissionIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -118,6 +196,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/redacteur/profil': {
+      id: '/redacteur/profil'
+      path: '/redacteur/profil'
+      fullPath: '/redacteur/profil'
+      preLoaderRoute: typeof RedacteurProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redacteur/paiements': {
+      id: '/redacteur/paiements'
+      path: '/redacteur/paiements'
+      fullPath: '/redacteur/paiements'
+      preLoaderRoute: typeof RedacteurPaiementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redacteur/missions': {
+      id: '/redacteur/missions'
+      path: '/redacteur/missions'
+      fullPath: '/redacteur/missions'
+      preLoaderRoute: typeof RedacteurMissionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redacteur/dashboard': {
+      id: '/redacteur/dashboard'
+      path: '/redacteur/dashboard'
+      fullPath: '/redacteur/dashboard'
+      preLoaderRoute: typeof RedacteurDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/eleve/nouvelle-commande': {
       id: '/eleve/nouvelle-commande'
       path: '/eleve/nouvelle-commande'
@@ -132,6 +238,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EleveDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/redacteur/mission/$id': {
+      id: '/redacteur/mission/$id'
+      path: '/redacteur/mission/$id'
+      fullPath: '/redacteur/mission/$id'
+      preLoaderRoute: typeof RedacteurMissionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eleve/commande/$id': {
+      id: '/eleve/commande/$id'
+      path: '/eleve/commande/$id'
+      fullPath: '/eleve/commande/$id'
+      preLoaderRoute: typeof EleveCommandeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -141,6 +261,12 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   EleveDashboardRoute: EleveDashboardRoute,
   EleveNouvelleCommandeRoute: EleveNouvelleCommandeRoute,
+  RedacteurDashboardRoute: RedacteurDashboardRoute,
+  RedacteurMissionsRoute: RedacteurMissionsRoute,
+  RedacteurPaiementsRoute: RedacteurPaiementsRoute,
+  RedacteurProfilRoute: RedacteurProfilRoute,
+  EleveCommandeIdRoute: EleveCommandeIdRoute,
+  RedacteurMissionIdRoute: RedacteurMissionIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
