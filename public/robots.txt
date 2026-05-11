@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /redacteur/
+Disallow: /eleve/dashboard
+Disallow: /eleve/commande/
+Disallow: /eleve/missions
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://exposetche.com/sitemap.xml
+
+# Règles spécifiques pour les robots majeurs
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+
+User-agent: *
+Crawl-delay: 1
