@@ -5,12 +5,42 @@ import { useAuth } from "@/store/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
-import { FilePlus2, Inbox, Clock, CheckCircle2 } from "lucide-react";
+import {
+  FilePlus2,
+  Inbox,
+  Clock,
+  CheckCircle2,
+  TrendingUp,
+  MessageSquare,
+  CreditCard,
+  BookOpen,
+  Users,
+  Award,
+  Calendar,
+  BarChart3,
+  HelpCircle,
+  Bell,
+  Download,
+  Eye,
+  Zap
+} from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import type { CommandeStatut } from "@/lib/constants";
 
-export const Route = createFileRoute("/eleve/dashboard")({ component: () => <AppLayout requireRole="eleve"><Dashboard /></AppLayout> });
+export const Route = createFileRoute("/eleve/dashboard")({
+  head: () => ({
+    meta: [
+      { title: "Tableau de bord - ExposéTché | Espace élève" },
+      { name: "description", content: "Accédez à votre espace élève sur ExposéTché. Consultez vos commandes et créez-en de nouvelles." },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://exposetche.com/eleve/dashboard" },
+    ],
+  }),
+  component: () => <AppLayout requireRole="eleve"><Dashboard /></AppLayout>
+});
 
 function Dashboard() {
   const { user, profile } = useAuth();
@@ -34,74 +64,204 @@ function Dashboard() {
 
   return (
     <div className="space-y-6">
+      {/* En-tête amélioré */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Bonjour {profile?.prenom} 👋</h1>
-          <p className="text-muted-foreground text-sm">Voici un aperçu de vos exposés.</p>
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-gold/10 rounded-full flex items-center justify-center">
+              <Users size={20} className="text-gold" />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold">Bonjour {profile?.prenom} 👋</h1>
+              <p className="text-muted-foreground text-sm">Bienvenue sur votre espace élève</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <Calendar size={12} />
+              {format(new Date(), "EEEE d MMMM yyyy", { locale: fr })}
+            </div>
+            <div className="flex items-center gap-1">
+              <Clock size={12} />
+              {format(new Date(), "HH:mm")}
+            </div>
+          </div>
         </div>
-        <Link to="/eleve/nouvelle-commande">
-          <Button className="bg-gold text-gold-foreground hover:bg-gold/90 shadow-gold">
-            <FilePlus2 size={16} /> Commander
-          </Button>
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link to="/eleve/nouvelle-commande">
+            <Button className="bg-gold text-gold-foreground hover:bg-gold/90 shadow-gold">
+              <FilePlus2 size={16} className="mr-2" />
+              Nouvelle commande
+            </Button>
+          </Link>
+          <Link to="/eleve/commandes">
+            <Button variant="outline">
+              <Inbox size={16} className="mr-2" />
+              Mes commandes
+            </Button>
+          </Link>
+        </div>
       </div>
 
+      {/* Hero de bienvenue */}
+      <section className="rounded-3xl border border-white/10 bg-gradient-to-r from-midnight via-midnight/95 to-midnight/80 p-6 text-white shadow-2xl">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-3">Bienvenue sur votre espace élève</h2>
+            <p className="text-sm sm:text-base text-white/80 mb-4">
+              Retrouvez vos commandes, suivez votre progression et accédez à l'accueil public d'ExposéTché en un clic.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link to="/eleve/nouvelle-commande">
+                <Button className="bg-gold text-gold-foreground hover:bg-gold/90 shadow-gold">
+                  <FilePlus2 size={16} className="mr-2" />
+                  Commander maintenant
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full lg:w-auto">
+            <div className="rounded-3xl bg-white/10 p-4">
+              <p className="text-xs uppercase tracking-[0.2em] text-white/60 mb-2">Avantage</p>
+              <h3 className="text-lg font-semibold">Rédacteurs sélectionnés</h3>
+              <p className="text-sm text-white/70 mt-2">Vos exposés sont confiés à des rédacteurs spécialisés par matière.</p>
+            </div>
+            <div className="rounded-3xl bg-white/10 p-4">
+              <p className="text-xs uppercase tracking-[0.2em] text-white/60 mb-2">Service</p>
+              <h3 className="text-lg font-semibold">Suivi en temps réel</h3>
+              <p className="text-sm text-white/70 mt-2">Suivez l'avancement de chaque commande directement depuis votre tableau de bord.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Statistiques améliorées */}
       <div className="grid grid-cols-3 gap-3">
-        <Stat icon={Inbox} label="Total" value={total} />
-        <Stat icon={Clock} label="En cours" value={enCours} />
-        <Stat icon={CheckCircle2} label="Livrés" value={livres} />
+        <Stat icon={Inbox} label="Total commandes" value={total} color="blue" />
+        <Stat icon={Clock} label="En cours" value={enCours} color="yellow" />
+        <Stat icon={CheckCircle2} label="Livrés" value={livres} color="green" />
       </div>
 
-      <div>
-        <h2 className="font-semibold mb-3">Mes commandes</h2>
+      {/* Section commandes améliorée */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <BookOpen size={20} className="text-midnight" />
+            <h2 className="font-semibold">Mes commandes récentes</h2>
+          </div>
+          <Link to="/eleve/commandes" className="text-sm text-gold hover:underline flex items-center gap-1">
+            Voir tout <TrendingUp size={14} />
+          </Link>
+        </div>
+
         {isLoading ? (
           <div className="space-y-2">
-            {[1, 2, 3].map((i) => <div key={i} className="h-20 rounded-xl bg-muted animate-pulse" />)}
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-20 rounded-xl bg-muted animate-pulse flex items-center gap-3 p-4">
+                <div className="w-10 h-10 bg-muted-foreground/20 rounded-lg"></div>
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 bg-muted-foreground/20 rounded w-3/4"></div>
+                  <div className="h-3 bg-muted-foreground/20 rounded w-1/2"></div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : commandes.length === 0 ? (
-          <div className="rounded-2xl border border-dashed p-10 text-center">
-            <p className="text-muted-foreground">Aucune commande pour le moment.</p>
+          <div className="rounded-2xl border-2 border-dashed border-muted p-8 text-center bg-gradient-to-br from-muted/20 to-muted/5">
+            <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <FilePlus2 size={32} className="text-gold" />
+            </div>
+            <h3 className="font-semibold text-lg mb-2">Aucune commande pour le moment</h3>
+            <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
+              Commencez votre première commande et laissez nos rédacteurs experts s'occuper de votre exposé.
+            </p>
             <Link to="/eleve/nouvelle-commande">
-              <Button className="mt-4 bg-midnight text-midnight-foreground">Passer ma première commande</Button>
+              <Button className="bg-gold text-gold-foreground hover:bg-gold/90 shadow-gold">
+                <Zap size={16} className="mr-2" />
+                Passer ma première commande
+              </Button>
             </Link>
           </div>
         ) : (
           <div className="space-y-2">
-            {commandes.map((c) => (
-              <Link
-                key={c.id}
-                to="/eleve/commande/$id"
-                params={{ id: c.id }}
-                className="block rounded-xl border bg-card p-4 hover:border-midnight transition-colors"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="font-medium truncate">{c.sujet}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {c.matiere} · {c.niveau} · {c.pages} pages · {format(new Date(c.created_at), "d MMM", { locale: fr })}
-                    </p>
+            {commandes.slice(0, 3).map((c) => (
+              <div key={c.id} className="rounded-xl border p-4 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                      <FilePlus2 size={20} className="text-muted-foreground" />
+                    </div>
+                    <div>
+                      <p className="font-medium">{c.titre || "Commande sans titre"}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {format(new Date(c.created_at), "dd/MM/yyyy", { locale: fr })}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-right shrink-0">
-                    <StatusBadge statut={c.statut as CommandeStatut} />
-                    <p className="text-xs mt-1 font-medium">{c.prix_total.toLocaleString()} F</p>
+                  <div className="flex items-center gap-2">
+                    <StatusBadge status={c.statut} />
+                    <Button variant="ghost" size="sm">
+                      <Eye size={14} />
+                    </Button>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         )}
+      </div>
+
+      {/* Section d'aide */}
+      <div className="rounded-2xl bg-muted/30 p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-semibold text-sm">Besoin d'aide ?</h3>
+            <p className="text-xs text-muted-foreground mt-1">Notre équipe est là pour vous accompagner</p>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm">
+              <HelpCircle size={14} className="mr-1" />
+              FAQ
+            </Button>
+            <Button variant="outline" size="sm">
+              <MessageSquare size={14} className="mr-1" />
+              Support
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function Stat({ icon: Icon, label, value }: { icon: any; label: string; value: number }) {
+function Stat({ icon: Icon, label, value, color = "mid" }: { icon: any; label: string; value: number | string; color?: string }) {
+  const colorClasses = {
+    blue: "bg-blue-50 border-blue-200 text-blue-700",
+    yellow: "bg-yellow-50 border-yellow-200 text-yellow-700",
+    green: "bg-green-50 border-green-200 text-green-700",
+    gold: "bg-gold/10 border-gold/30 text-gold",
+    mid: "bg-midnight/5 border-midnight/20 text-midnight"
+  };
+
+  const iconColors = {
+    blue: "text-blue-600",
+    yellow: "text-yellow-600",
+    green: "text-green-600",
+    gold: "text-gold",
+    mid: "text-midnight"
+  };
+
   return (
-    <div className="rounded-xl bg-card border p-3 md:p-4">
-      <div className="flex items-center gap-2 text-muted-foreground text-xs">
-        <Icon size={14} /> {label}
+    <div className={`rounded-xl border p-3 md:p-4 ${colorClasses[color as keyof typeof colorClasses]} transition-all duration-200 hover:shadow-md hover:scale-105`}>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-muted-foreground text-xs">
+          <Icon size={16} className={iconColors[color as keyof typeof iconColors]} />
+          <span>{label}</span>
+        </div>
+        <div className="w-2 h-2 bg-current rounded-full opacity-50"></div>
       </div>
-      <p className="text-2xl md:text-3xl font-bold mt-1">{value}</p>
+      <p className="text-2xl md:text-3xl font-bold mt-2">{value}</p>
     </div>
   );
 }
