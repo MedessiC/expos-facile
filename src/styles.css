@@ -49,6 +49,83 @@
   --shadow-gold: 0 8px 24px -8px oklch(0.82 0.16 85 / 0.5);
 }
 
+/* Responsive Typography */
+@media (max-width: 640px) {
+  h1 { font-size: 2.5rem !important; line-height: 1.2 !important; }
+  h2 { font-size: 2rem !important; }
+  h3 { font-size: 1.5rem !important; }
+  .text-lg { font-size: 1rem !important; }
+  .text-xl { font-size: 1.125rem !important; }
+  .text-2xl { font-size: 1.5rem !important; }
+  .text-3xl { font-size: 1.875rem !important; }
+  .text-4xl { font-size: 2.25rem !important; }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .hero-padding { padding: 3rem 1rem !important; }
+  .feature-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+  .pricing-grid { grid-template-columns: 1fr !important; }
+  .testimonial-spacing { margin: 2rem 0 !important; }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Glass Effect */
+.glass {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FFD700;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFA500;
+}
+
 :root {
   --radius: 0.875rem;
 
