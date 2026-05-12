@@ -61,7 +61,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Exposétché — Commande d'exposés scolaires" },
+      { title: "ExposéTché — Commande d'exposés scolaires" },
       { name: "description", content: "Plateforme MIDEESSI : commandez vos exposés scolaires, réalisés par des rédacteurs humains, livrés validés." },
     ],
     links: [{ rel: "stylesheet", href: appCss }],

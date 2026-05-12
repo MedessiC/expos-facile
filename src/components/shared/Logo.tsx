@@ -9,7 +9,7 @@ export function Logo({ className, mark = false }: { className?: string; mark?: b
       </span>
       {!mark && (
         <span className="font-semibold tracking-tight text-lg">
-          Exposé<span className="text-gold-shimmer">tché</span>
+          Exposé<span className="text-gold-shimmer">Tché</span>
         </span>
       )}
     </div>
