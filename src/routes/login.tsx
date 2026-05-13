@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/store/auth";
 import { Button } from "@/components/ui/button";
@@ -36,9 +37,13 @@ function LoginPage() {
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
     const { error } = await supabase.auth.signInWithPassword(data);
-    setSubmitting(false);
-    if (error) toast.error(error.message === "Invalid login credentials" ? "Identifiants invalides" : error.message);
-    else toast.success("Connexion réussie");
+    if (error) {
+      setSubmitting(false);
+      toast.error(error.message === "Invalid login credentials" ? "Identifiants invalides" : error.message);
+    } else {
+      toast.success("Connexion réussie");
+      // Auth state will update via onAuthStateChange, triggering redirect in useEffect
+    }
   };
 
   return (
@@ -49,6 +54,12 @@ function LoginPage() {
         <p className="text-center text-sm text-muted-foreground mt-1">
           Accédez à votre espace personnel
         </p>
+        <div className="mt-4 text-center">
+          <Link to="/" className="inline-flex items-center justify-center gap-2 text-sm text-midnight hover:text-gold transition-colors">
+            <ArrowLeft className="w-4 h-4" />
+            Retour à l’accueil
+          </Link>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
           <div>
             <Label htmlFor="email">Email</Label>

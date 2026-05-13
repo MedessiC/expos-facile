@@ -1,8 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, Control, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { ArrowLeft } from "lucide-react";
+import { isValidPhoneNumber } from "libphonenumber-js";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/store/auth";
 import { Button } from "@/components/ui/button";
@@ -20,7 +24,9 @@ const eleveSchema = z.object({
   prenom: z.string().min(2, "Requis"),
   email: z.string().email("Email invalide"),
   password: z.string().min(6, "6 caractères minimum"),
-  telephone: z.string().min(8, "Téléphone requis"),
+  telephone: z.string().min(8, "Téléphone requis").refine((value) => isValidPhoneNumber(value || ""), {
+    message: "Numéro de téléphone invalide",
+  }),
   ecole: z.string().min(2, "École requise"),
   classe: z.string().min(1, "Classe requise"),
 });
@@ -30,7 +36,9 @@ const redacteurSchema = z.object({
   prenom: z.string().min(2, "Requis"),
   email: z.string().email("Email invalide"),
   password: z.string().min(6, "6 caractères minimum"),
-  telephone: z.string().min(8, "Téléphone requis"),
+  telephone: z.string().min(8, "Téléphone requis").refine((value) => isValidPhoneNumber(value || ""), {
+    message: "Numéro de téléphone invalide",
+  }),
   niveau_etudes: z.string().min(2, "Niveau requis"),
   matieres: z.array(z.string()).min(1, "Choisissez au moins une matière"),
 });
@@ -55,6 +63,12 @@ function RegisterPage() {
         <p className="text-center text-sm text-muted-foreground mt-1">
           Choisissez votre profil pour commencer
         </p>
+        <div className="mt-4 text-center">
+          <Link to="/" className="inline-flex items-center justify-center gap-2 text-sm text-midnight hover:text-gold transition-colors">
+            <ArrowLeft className="w-4 h-4" />
+            Retour à l’accueil
+          </Link>
+        </div>
 
         <Tabs value={tab} onValueChange={(v) => setTab(v as any)} className="mt-6">
           <TabsList className="grid grid-cols-2 w-full">
@@ -79,11 +93,11 @@ function RegisterPage() {
 
 function EleveForm() {
   const [busy, setBusy] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<EleveData>({ resolver: zodResolver(eleveSchema) });
+  const { register, handleSubmit, control, formState: { errors } } = useForm<EleveData>({ resolver: zodResolver(eleveSchema) });
 
   const onSubmit = async (data: EleveData) => {
     setBusy(true);
-    const { error } = await supabase.auth.signUp({
+    const { error, data: signUpData } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
@@ -98,9 +112,26 @@ function EleveForm() {
         },
       },
     });
-    setBusy(false);
-    if (error) toast.error(error.message);
-    else toast.success("Compte créé ! Vérifiez votre email.");
+    
+    if (error) {
+      setBusy(false);
+      toast.error(error.message);
+      return;
+    }
+    
+    // Try auto-login for immediate redirect
+    if (signUpData.user) {
+      try {
+        await supabase.auth.signInWithPassword({
+          email: data.email,
+          password: data.password,
+        });
+        toast.success("Compte créé ! Bienvenue !");
+      } catch (e) {
+        setBusy(false);
+        toast.info("Compte créé ! Vérifiez votre email pour vous connecter.");
+      }
+    }
   };
 
   return (
@@ -119,9 +150,7 @@ function EleveForm() {
       <Field label="Classe" error={errors.classe?.message}>
         <Input placeholder="Ex: Terminale D" {...register("classe")} />
       </Field>
-      <Field label="Téléphone" error={errors.telephone?.message}>
-        <Input type="tel" {...register("telephone")} />
-      </Field>
+      <PhoneField control={control} error={errors.telephone?.message} />
       <Field label="Email" error={errors.email?.message}>
         <Input type="email" {...register("email")} />
       </Field>
@@ -139,7 +168,7 @@ function RedacteurForm() {
   const [busy, setBusy] = useState(false);
   const [matieres, setMatieres] = useState<string[]>([]);
   const [cv, setCv] = useState<File | null>(null);
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<RedData>({
+  const { register, handleSubmit, control, formState: { errors }, setValue } = useForm<RedData>({
     resolver: zodResolver(redacteurSchema),
     defaultValues: { matieres: [] },
   });
@@ -180,8 +209,18 @@ function RedacteurForm() {
         await supabase.from("profiles").update({ cv_url: path }).eq("id", signUp.user.id);
       }
     }
-    setBusy(false);
-    toast.success("Compte créé ! Validation par MIDEESSI sous 24h.");
+    
+    // Try auto-login, otherwise show email verification message
+    try {
+      await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+      toast.success("Compte créé ! En attente de validation.");
+    } catch (e) {
+      setBusy(false);
+      toast.info("Compte créé ! Validation par MIDEESSI sous 24h.");
+    }
   };
 
   return (
@@ -197,9 +236,7 @@ function RedacteurForm() {
       <Field label="Niveau d'études" error={errors.niveau_etudes?.message}>
         <Input placeholder="Ex: Licence 3 SVT" {...register("niveau_etudes")} />
       </Field>
-      <Field label="Téléphone" error={errors.telephone?.message}>
-        <Input type="tel" {...register("telephone")} />
-      </Field>
+      <PhoneField control={control} error={errors.telephone?.message} />
       <Field label="Email" error={errors.email?.message}>
         <Input type="email" {...register("email")} />
       </Field>
@@ -234,6 +271,36 @@ function RedacteurForm() {
         {busy ? "Création…" : "Postuler"}
       </Button>
     </form>
+  );
+}
+
+function PhoneField({ control, error }: { control: Control<EleveData | RedData>; error?: string }) {
+  return (
+    <div>
+      <Label>Téléphone</Label>
+      <Controller
+        name="telephone"
+        control={control}
+        render={({ field }) => (
+          <PhoneInput
+            international
+            defaultCountry="BJ"
+            countryCallingCodeEditable={false}
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            inputComponent={Input}
+            inputClassName="w-full"
+            countrySelectProps={{
+              className:
+                "h-9 rounded-l-md border border-r-0 border-input bg-transparent px-3 text-base text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+            }}
+            className="w-full"
+          />
+        )}
+      />
+      {error && <p className="text-xs text-destructive mt-1">{error}</p>}
+    </div>
   );
 }
 

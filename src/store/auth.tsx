@@ -36,17 +36,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUserData = async (uid: string) => {
+  const fetchUserData = async (uid: string, userMetadata?: any) => {
     const [{ data: roleData }, { data: profileData }] = await Promise.all([
       supabase.from("user_roles").select("role").eq("user_id", uid).maybeSingle(),
       supabase.from("profiles").select("*").eq("id", uid).maybeSingle(),
     ]);
-    setRole((roleData?.role as Role) ?? null);
+    // Use user_metadata role as fallback if not in user_roles table
+    const roleFromDB = (roleData?.role as Role) ?? (userMetadata?.role as Role) ?? null;
+    setRole(roleFromDB);
     setProfile((profileData as Profile) ?? null);
   };
 
   const refresh = async () => {
-    if (user?.id) await fetchUserData(user.id);
+    if (user?.id) await fetchUserData(user.id, user.user_metadata);
   };
 
   useEffect(() => {
@@ -55,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(sess?.user ?? null);
       if (sess?.user) {
         setTimeout(() => {
-          fetchUserData(sess.user.id);
+          fetchUserData(sess.user.id, sess.user.user_metadata);
         }, 0);
       } else {
         setRole(null);
@@ -67,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(data.session);
       setUser(data.session?.user ?? null);
       if (data.session?.user) {
-        fetchUserData(data.session.user.id).finally(() => setLoading(false));
+        fetchUserData(data.session.user.id, data.session.user.user_metadata).finally(() => setLoading(false));
       } else {
         setLoading(false);
       }

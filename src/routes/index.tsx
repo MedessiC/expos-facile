@@ -19,7 +19,7 @@ import {
   CreditCard,
   Headphones,
   Lock,
-  ChevronDown
+  ChevronDown,
 } from "lucide-react";
 import { useAuth } from "@/store/auth";
 import { AnimatedSection, FloatingCard, fadeInUp, staggerContainer } from "@/components/ui/animations";
@@ -86,10 +86,10 @@ function Landing() {
             variants={staggerContainer}
           >
             <motion.span
-              className="inline-block rounded-full bg-gold/20 border border-gold/30 px-4 py-2 text-sm font-medium tracking-wide mb-6"
+              className="inline-flex items-center gap-2 rounded-full bg-gold/20 border border-gold/30 px-4 py-2 text-sm font-medium tracking-wide mb-6"
               variants={fadeInUp}
             >
-              ✨ Par MIDEESSI · Cotonou · Service Premium
+              Par MIDEESSI · Cotonou · Service Premium
             </motion.span>
 
             <motion.h1
@@ -376,85 +376,6 @@ function Landing() {
         </div>
       </AnimatedSection>
 
-      {/* How It Works */}
-      <AnimatedSection className="relative z-10 bg-muted/30 py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4">
-          <motion.div
-            className="text-center mb-16"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            <motion.h2
-              className="text-3xl md:text-5xl font-bold mb-4"
-              variants={fadeInUp}
-            >
-              Comment ça marche ?
-            </motion.h2>
-            <motion.p
-              className="text-lg text-muted-foreground max-w-2xl mx-auto"
-              variants={fadeInUp}
-            >
-              Un processus simple et transparent en 3 étapes
-            </motion.p>
-          </motion.div>
-
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true }}
-              variants={staggerContainer}
-            >
-              <motion.div variants={fadeInUp} className="space-y-8">
-                {[
-                  {
-                    step: "01",
-                    title: "Commandez en ligne",
-                    desc: "Remplissez le formulaire avec votre sujet, niveau et deadline. Paiement sécurisé."
-                  },
-                  {
-                    step: "02",
-                    title: "Rédaction par expert",
-                    desc: "Un rédacteur spécialisé prend en charge votre commande selon vos exigences."
-                  },
-                  {
-                    step: "03",
-                    title: "Validation & livraison",
-                    desc: "Notre équipe relit l'exposé, puis vous le recevez par email et dans votre espace."
-                  }
-                ].map((item, index) => (
-                  <motion.div
-                    key={item.step}
-                    variants={fadeInUp}
-                    className="flex gap-6"
-                  >
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 bg-gold text-midnight rounded-full flex items-center justify-center font-bold text-lg">
-                        {item.step}
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                      <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <OrderWorkflowAnimation />
-            </motion.div>
-          </div>
-        </div>
-      </AnimatedSection>
 
       {/* Pricing */}
       <AnimatedSection className="relative z-10 mx-auto max-w-7xl px-4 py-16 md:py-24">
@@ -555,41 +476,6 @@ function Landing() {
             </motion.div>
           ))}
         </motion.div>
-      </AnimatedSection>
-
-      {/* Testimonials */}
-      <AnimatedSection className="relative z-10 bg-gradient-to-r from-midnight/5 to-gold/5 py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4">
-          <motion.div
-            className="text-center mb-16"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            <motion.h2
-              className="text-3xl md:text-5xl font-bold mb-4"
-              variants={fadeInUp}
-            >
-              Ils nous font confiance
-            </motion.h2>
-            <motion.p
-              className="text-lg text-muted-foreground max-w-2xl mx-auto"
-              variants={fadeInUp}
-            >
-              Découvrez les témoignages de nos étudiants satisfaits
-            </motion.p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <TestimonialsCarousel />
-          </motion.div>
-        </div>
       </AnimatedSection>
 
       {/* Trust Indicators */}
